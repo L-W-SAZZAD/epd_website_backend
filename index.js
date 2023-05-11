@@ -42,11 +42,14 @@ const courseListCollection = client
   .db("Course_lists")
   .collection("Course_items");
 // Course collection
-// Course collection
+// contact message collection
 const contactMessageCollection = client
-  .db("Messages")
+  .db("Course_lists")
   .collection("Message_doc");
-// Course collection
+// contact message collection
+// register collection
+const registerCollection = client.db("Course_lists").collection("RegisterInfo");
+// register collection
 // course route
 app.get("/", async (req, res) => {
   res.send({ success: true, message: "Welcome" });
@@ -106,6 +109,21 @@ app.post("/message", async (req, res) => {
   }
 });
 // message doc post route
+// register data post route
+app.post("/register", async (req, res) => {
+  try {
+    const registerInfo = req.body;
+    const updateDoc = await registerCollection.insertOne(registerInfo);
+    if (updateDoc) {
+      res.send({ success: true, message: "Register Success" });
+    } else {
+      res.send({ success: false, message: "invalid Information" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+// register data post route
 // listen
 app.listen(port, () => {
   console.log(`server is running port ${port}`);
